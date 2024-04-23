@@ -1,0 +1,13 @@
+.bg-main {
+  background-color: #020718;
+}
+.bg-main-secondary {
+  background-color: rgba(16, 40, 119, 0.22);
+}
+.link-secondary.active {
+  color: white !important;
+  border: 4px solid;
+  border-image: linear-gradient(45deg, #061A62, #1A869E) 30;
+  border-radius: 8px;
+  border-image-outset: 1;
+}

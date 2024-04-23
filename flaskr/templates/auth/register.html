@@ -1,0 +1,29 @@
+{% extends 'auth/base.html' %}
+
+{% block content %}
+<form method="post">
+  <h1 class="h3 mb-3 fw-normal">Auth - Register</h1>
+
+  <div class="form-floating mb-3">
+    <input type="email" name="firstname" class="form-control" id="floatingFname" />
+    <label for="floatingFname">First name</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="email" name="lastname" class="form-control" id="floatingLname" />
+    <label for="floatingLname">Last Name</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="email" name="email" class="form-control" id="floatingEmail" />
+    <label for="floatingEmail">Email address</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="text" name="username" class="form-control" id="floatingUsername" />
+    <label for="floatingUsername">Username</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="password" name="password" class="form-control" id="floatingPassword" />
+    <label for="floatingPassword">Password</label>
+  </div>
+  <button class="btn btn-primary w-100 py-2" type="submit">Register</button>
+</form>
+{% endblock %}
