@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .chat-messages {
+    height: 65vh;
+    overflow-y: auto;
+  }
+  /* Align sender messages to the right */
+  .sender-message {
+    max-width: 55%;
+  }
+  /* Align receiver messages to the left */
+  .receiver-message {
+    max-width: 55%;
+  }
+</style>
+<!-- <div class="d-block">
+  <h1 class="fs-2">General Learning Chat</h1>
+  <small class="text-secondary">...</small>
+</div> -->
+<div class="container">
+  <div class="card bg-main">
+    <div class="card-header bg-primary text-white">AI Assistant</div>
+    <div class="card-body chat-messages">
+      <!-- Messages will be displayed here -->
+      <!-- <div class="media sender-message w-auto d-flex justify-content-end ms-auto">
+        <div class="media-body">
+          <h5 class="mt-0 small text-end">Kojo</h5>
+          <p class="bg-secondary p-3 rounded">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+      </div>
+      <div class="media receiver-message w-auto d-flex">
+        <div class="media-body">
+          <h5 class="mt-0 small">AI Assistant</h5>
+          <p class="bg-light text-dark p-3 rounded">
+            Exercitationem nemo autem odit consectetur. Porro, id! Dicta ut saepe autem molestiae ducimus! Fugit nam
+            incidunt velit quidem ratione, voluptates soluta unde?
+          </p>
+        </div>
+      </div> -->
+    </div>
+    <div class="card-footer">
+      <form id="messageForm" method="post">
+        <div class="input-group">
+          <input type="text" name="message" class="form-control messageInput" placeholder="Type your message..." />
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  document.querySelector('#messageForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    let message = document.querySelector('.messageInput').value;
+    var chatMessages = document.querySelector('.chat-messages');
+    var senderMessage = document.createElement('div');
+    senderMessage.classList.add('media', 'sender-message', 'w-auto', 'd-flex', 'justify-content-end', 'ms-auto');
+    senderMessage.innerHTML = `
+        <div class="media-body">
+          <h5 class="mt-0 small text-end">Me</h5>
+          <p class="bg-secondary p-3 rounded">${message}</p>
+        </div>
+        `;
+    chatMessages.appendChild(senderMessage);
+    fetch('/chat/ai-message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: message })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // Output result into the receiver-message section
+        var receiverMessage = document.createElement('div');
+        receiverMessage.classList.add('media', 'receiver-message');
+        receiverMessage.innerHTML = `
+          <div class="media-body">
+            <h5 class="mt-0 small">AI Assistant</h5>
+            <p class="bg-light text-dark p-3 rounded">
+              ${data.message.message}
+            </p>
+          </div>
+        `;
+        chatMessages.appendChild(receiverMessage);
+
+        // Clear message input
+        document.getElementById('messageInput').value = '';
+      })
+      .catch((error) => console.error('Error:', error));
+  });
+</script>
+{% endblock %}

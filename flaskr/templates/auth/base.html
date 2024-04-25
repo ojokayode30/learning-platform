@@ -92,7 +92,8 @@
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      {% endfor %} {% block content %}{% endblock %}
+      {% endfor %}
+      {% block content %}{% endblock %}
     </main>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
   </body>

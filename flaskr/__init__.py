@@ -1,5 +1,9 @@
 import os
-from flask import (Flask, render_template)
+from flask import (Flask, render_template, redirect, url_for)
+from . import auth
+from . import course
+from . import ai_chat
+from flaskr.auth import login_required
 
 def create_app(test_config=None):
   app = Flask(__name__, instance_relative_config=True)
@@ -18,7 +22,12 @@ def create_app(test_config=None):
   except OSError:
     pass
   
+  @app.route('/')
+  def index():
+    return redirect(url_for('dashboard'))
+
   @app.route('/dashboard')
+  @login_required
   def dashboard():
     return render_template('dashboard.html')
 
@@ -29,7 +38,8 @@ def create_app(test_config=None):
   from . import db
   db.init_app(app)
 
-  from . import auth
   app.register_blueprint(auth.bp)
+  app.register_blueprint(course.bp)
+  app.register_blueprint(ai_chat.bp)
   
   return app

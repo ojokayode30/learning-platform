@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-block">
+  <h1 class="fs-2">Enrolled Courses</h1>
+  <small class="text-secondary">course to enrolled in...</small>
+</div>
+<div class="row g-4 mt-3 mb-5">
+  <!-- Course cards -->
+  {% for course in enrolled_courses %}
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <a href="/course/{{ course['id'] }}/lessons"><h5 class="card-title course-title">{{ course['title'] }}</h5></a>
+        <p class="card-text">{{ course['description'] }}</p>
+        <p class="card-text">Instructor: {{ course['instructor'] }}</p>
+        <a href="/course/unenroll/{{ course['id'] }}" class="btn btn-primary">Un-enroll</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- <div class="col-md-12">
+    <div class="card course-card">
+      <div class="card-body">
+        <h5 class="card-title course-title">Introduction to Machine Learning</h5>
+        <p class="card-text course-description">Learn the basics of machine learning algorithms and techniques.</p>
+        <p class="card-text course-instructor">Instructor: Dr. John Smith</p>
+        <a href="#" class="btn btn-primary">Enroll</a>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<div class="d-block">
+  <h1 class="fs-2">Available Courses</h1>
+  <small class="text-secondary">Select course to enroll in...</small>
+</div>
+<div class="row g-4 mt-3">
+  <!-- Course cards -->
+  {% for course in courses %}
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <a href="/course/{{ course['id'] }}/lessons"><h5 class="card-title">{{ course['title'] }}</h5></a>
+        <p class="card-text">{{ course['description'] }}</p>
+        <p class="card-text">Instructor: {{ course['instructor'] }}</p>
+        <a href="/course/enroll/{{ course['id'] }}" class="btn btn-primary">Enroll</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- <div class="col-md-12">
+    <div class="card course-card">
+      <div class="card-body">
+        <h5 class="card-title course-title">Introduction to Machine Learning</h5>
+        <p class="card-text course-description">Learn the basics of machine learning algorithms and techniques.</p>
+        <p class="card-text course-instructor">Instructor: Dr. John Smith</p>
+        <a href="#" class="btn btn-primary">Enroll</a>
+      </div>
+    </div>
+  </div> -->
+</div>
+{% endblock %}

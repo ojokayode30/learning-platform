@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-block">
+  <h1 class="fs-2">{{ course.title }} Lessons</h1>
+  <p class="text-secondary">Description: {{ course.description }}</p>
+  <p class="text-secondary">Instructor: {{ course.instructor }}</p>
+</div>
+
+<h2 class="mb-3">Lessons</h2>
+<a href="/course/enroll/{{ course['id'] }}" class="btn btn-primary mb-4">Assistant AI Learning</a>
+<ul>
+  {% for lesson in lessons %}
+  <li>
+    <h3 class="lead fw-bold">{{ lesson.title }}</h3>
+    <p class="text-secondary">{{ lesson.content }}</p>
+    <!-- Add more details about the lesson as needed -->
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
