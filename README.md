@@ -18,6 +18,14 @@ Activate the corresponding virtual environment by running code below
 . .venv/bin/activate
 ```
 
+### Install requirements
+
+Run the code below to install libraries and framework from requirements.txt
+
+```bash
+pip install -r requirements.txt 
+```
+
 ### Initialize Database File
 
 Run the init-db command:
