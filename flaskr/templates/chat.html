@@ -13,13 +13,53 @@
     max-width: 55%;
   }
 </style>
+<style>
+  .loader {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 32px 0 #fff, -32px 0 #fff;
+    position: relative;
+    animation: flash 0.5s ease-out infinite alternate;
+  }
+
+  @keyframes flash {
+    0% {
+      background-color: #fff2;
+      box-shadow: 32px 0 #fff2, -32px 0 #fff;
+    }
+    50% {
+      background-color: #fff;
+      box-shadow: 32px 0 #fff2, -32px 0 #fff2;
+    }
+    100% {
+      background-color: #fff2;
+      box-shadow: 32px 0 #fff, -32px 0 #fff2;
+    }
+  }
+</style>
 <!-- <div class="d-block">
   <h1 class="fs-2">General Learning Chat</h1>
   <small class="text-secondary">...</small>
 </div> -->
 <div class="container">
+  <div class="d-block">
+    <h1 class="fs-2">{{ course.title }} Lessons</h1>
+    <p class="text-secondary">Description: {{ course.description }}</p>
+    <p class="text-secondary">Instructor: {{ course.instructor }}</p>
+  </div>
   <div class="card bg-main">
-    <div class="card-header bg-primary text-white">AI Assistant</div>
+    <div class="card-header bg-primary text-white">
+      <ul class="nav nav-pills card-header-pills">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">AI Assistant</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Instructor</a>
+        </li>
+      </ul>
+    </div>
     <div class="card-body chat-messages">
       <!-- Messages will be displayed here -->
       <!-- <div class="media sender-message w-auto d-flex justify-content-end ms-auto">
@@ -37,6 +77,18 @@
           </p>
         </div>
       </div> -->
+      <div class="media receiver-message w-auto d-flex">
+        <div class="media-body">
+          <h5 class="mt-0 small">AI Assistant</h5>
+          <p class="bg-light text-dark p-3 rounded">{{ intro }}</p>
+        </div>
+      </div>
+      <div class="media receiver-message w-auto d-flex">
+        <div class="media-body">
+          <h5 class="mt-0 small">AI Assistant</h5>
+          <p class="bg-light text-dark p-3 rounded">{{ course_suggestions }}</p>
+        </div>
+      </div>
     </div>
     <div class="card-footer">
       <form id="messageForm" method="post">
@@ -64,6 +116,8 @@
         </div>
         `;
     chatMessages.appendChild(senderMessage);
+    // Clear message input
+    document.querySelector('.messageInput').value = '';
     fetch('/chat/ai-message', {
       method: 'POST',
       headers: {
@@ -86,9 +140,6 @@
           </div>
         `;
         chatMessages.appendChild(receiverMessage);
-
-        // Clear message input
-        document.getElementById('messageInput').value = '';
       })
       .catch((error) => console.error('Error:', error));
   });
