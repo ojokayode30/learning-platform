@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-block mb-4">
+  <h1 class="fs-2">Course Resources</h1>
+  <small class="text-secondary">Browse through the resources...</small>
+</div>
+<div class="row">
+  {% for _ in range(10) %}
+  <div class="col-3">
+    <a href="{{ url_for('static', filename='resources/pdfs/resource-1.pdf') }}" class="text-decoration-none">
+      <div class="card bg-main-secondary mb-3">
+        <img src="{{ url_for('static', filename='resources/resource-1.png') }}" alt="Resources" class="card-img-top" />
+        <div class="card-body">
+          <h5 class="card-title">Deep Learning Fundamental</h5>
+          <p class="card-text small">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

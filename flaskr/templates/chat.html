@@ -44,21 +44,31 @@
   <small class="text-secondary">...</small>
 </div> -->
 <div class="container">
+  {% if course %}
   <div class="d-block">
     <h1 class="fs-2">{{ course.title }} Lessons</h1>
     <p class="text-secondary">Description: {{ course.description }}</p>
     <p class="text-secondary">Instructor: {{ course.instructor }}</p>
   </div>
+  {% endif %}
   <div class="card bg-main">
     <div class="card-header bg-primary text-white">
+      {% if course %}
+      <ul class="nav nav-pills card-header-pills">
+        <li class="nav-item">
+          <a class="nav-link chat_assistant" href="#" onclick="chatType('assistant')">AI Assistant</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link chat_instructor" href="#" onclick="chatType('instructor')">Instructor</a>
+        </li>
+      </ul>
+      {% else %}
       <ul class="nav nav-pills card-header-pills">
         <li class="nav-item">
           <a class="nav-link active" href="#">AI Assistant</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Instructor</a>
-        </li>
       </ul>
+      {% endif %}
     </div>
     <div class="card-body chat-messages">
       <!-- Messages will be displayed here -->
@@ -77,18 +87,22 @@
           </p>
         </div>
       </div> -->
+      {% if intro %}
       <div class="media receiver-message w-auto d-flex">
         <div class="media-body">
           <h5 class="mt-0 small">AI Assistant</h5>
           <p class="bg-light text-dark p-3 rounded">{{ intro }}</p>
         </div>
       </div>
+      {% endif %}
+      {% if course_suggestions %}
       <div class="media receiver-message w-auto d-flex">
         <div class="media-body">
           <h5 class="mt-0 small">AI Assistant</h5>
           <p class="bg-light text-dark p-3 rounded">{{ course_suggestions }}</p>
         </div>
       </div>
+      {% endif %}
     </div>
     <div class="card-footer">
       <form id="messageForm" method="post">
@@ -103,6 +117,20 @@
   </div>
 </div>
 <script>
+  var selectedChat = 'instructor';
+  document.querySelector('.chat_assistant').classList.remove('active', 'fw-bold');
+  document.querySelector('.chat_instructor').classList.add('active', 'fw-bold');
+
+  function chatType(type) {
+    selectedChat = type;
+    if (type == 'assistant') {
+      document.querySelector('.chat_instructor').classList.remove('active', 'fw-bold');
+      document.querySelector('.chat_' + type).classList.add('active', 'fw-bold');
+      return
+    }
+    document.querySelector('.chat_assistant').classList.remove('active', 'fw-bold');
+    document.querySelector('.chat_' + type).classList.add('active', 'fw-bold');
+  }
   document.querySelector('#messageForm').addEventListener('submit', function (event) {
     event.preventDefault();
     let message = document.querySelector('.messageInput').value;
@@ -118,12 +146,16 @@
     chatMessages.appendChild(senderMessage);
     // Clear message input
     document.querySelector('.messageInput').value = '';
-    fetch('/chat/ai-message', {
+    fetch('/chat/message', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: message })
+      body: JSON.stringify({ 
+        message: message, 
+        type: selectedChat,
+        course: "{{ course.title }}"
+      })
     })
       .then((response) => response.json())
       .then((data) => {
@@ -133,9 +165,9 @@
         receiverMessage.classList.add('media', 'receiver-message');
         receiverMessage.innerHTML = `
           <div class="media-body">
-            <h5 class="mt-0 small">AI Assistant</h5>
+            <h5 class="mt-0 small">${selectedChat == 'assistant' ? 'AI Assistant' : 'Instructor' }</h5>
             <p class="bg-light text-dark p-3 rounded">
-              ${data.message.message}
+              ${data.message.message || data.message}
             </p>
           </div>
         `;

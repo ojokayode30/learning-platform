@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if not enrolled %}
+<div class="d-block border-bottom mb-5">
+  <h1 class="lead fw-bold">You're not enrolled in this course yet, <a href="/course/enroll/{{ course['id'] }}" class="btn btn-sm btn-primary">Enroll Now</a></h1>
+</div>
+{% endif %}
+
 <div class="d-block">
   <h1 class="fs-2">{{ course.title }} Lessons</h1>
   <p class="text-secondary">Description: {{ course.description }}</p>
@@ -8,12 +14,27 @@
 </div>
 
 <h2 class="mb-3">Lessons</h2>
-<a href="/chat/{{ course['id'] }}/course" class="btn btn-primary mb-4">Assistant AI Learning</a>
-<ul>
+<a href="/chat/{{ course['id'] }}/course" class="btn btn-primary mb-5">Assistant AI Learning</a>
+<ul class="list-unstyled">
   {% for lesson in lessons %}
-  <li>
+  <li class="border-bottom mb-4">
     <h3 class="lead fw-bold">{{ lesson.title }}</h3>
     <p class="text-secondary">{{ lesson.content }}</p>
+    {% if enrolled %}
+    <div class="pt-5">
+      {% if lesson.completed %}
+      <p class="d-flex justify-content-between">Lesson completed <a href="/course/lessons_progress/{{ lesson.id }}/undone" class="text-warning fw-bold">mark as not completed</a></p>
+      {% else %}
+      <p class="d-flex justify-content-between">Lesson not completed yet <a href="/course/lessons_progress/{{ lesson.id }}/done" class="text-success fw-bold">Mark as completed</a></p>
+      {% endif %}
+      <p class="d-flex justify-content-between">Do you understand this lesson? {% if lesson.understood == 1 %} Yes {% else %} No {% endif %}
+        <span>
+          <a href="/course/lessons_understanding/{{ lesson.id }}/yes" class="btn btn-sm btn-primary">Yes</a>
+          <a href="/course/lessons_understanding/{{ lesson.id }}/no" class="btn btn-sm btn-secondary">No</a>
+        </span>
+      </p>
+    </div>
+    {% endif %}
     <!-- Add more details about the lesson as needed -->
   </li>
   {% endfor %}

@@ -1,8 +1,12 @@
 import os
-from flask import (Flask, render_template, redirect, url_for)
+from flask import (Flask, render_template, redirect, url_for, session)
+from . import db
 from . import auth
 from . import course
 from . import ai_chat
+from . import resource
+from flaskr.auth import login_required
+from flaskr.db import get_db
 from flaskr.auth import login_required
 
 def create_app(test_config=None):
@@ -29,17 +33,36 @@ def create_app(test_config=None):
   @app.route('/dashboard')
   @login_required
   def dashboard():
-    return render_template('dashboard.html')
+    user_id = session.get('user_id')
+    db = get_db()
+
+    # Total courses
+    total_courses = db.execute("SELECT COUNT(*) FROM courses").fetchone()[0]
+
+    # Total enrolled courses
+    total_enrolled_courses = db.execute(
+        "SELECT COUNT(*) FROM user_course_enrollment WHERE user_id = ?", (user_id,)
+    ).fetchone()[0]
+
+    # Completed courses
+    completed_courses = db.execute("""
+        SELECT COUNT(DISTINCT uce.course_id)
+        FROM user_course_enrollment AS uce
+        JOIN user_lesson_progress AS ulp ON uce.course_id = ulp.lesson_id
+        WHERE uce.user_id = ? AND ulp.completed = 1
+    """, (user_id,)).fetchone()[0]
+
+    return render_template('dashboard.html', total_courses=total_courses, total_enrolled_courses=total_enrolled_courses, completed_courses=completed_courses)
 
   @app.route('/hello')
   def hello():
     return 'Hello there!'
-  
-  from . import db
+
   db.init_app(app)
 
   app.register_blueprint(auth.bp)
   app.register_blueprint(course.bp)
   app.register_blueprint(ai_chat.bp)
+  app.register_blueprint(resource.bp)
   
   return app

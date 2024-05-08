@@ -82,6 +82,7 @@ CREATE TABLE
         user_id CHAR(36),
         lesson_id CHAR(36),
         completed BOOLEAN DEFAULT 0,
+        understood BOOLEAN DEFAULT 0,
         progress_date DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
