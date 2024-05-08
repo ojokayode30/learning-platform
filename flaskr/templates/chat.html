@@ -154,7 +154,7 @@
       body: JSON.stringify({ 
         message: message, 
         type: selectedChat,
-        course: "{{ course.title }}"
+        course: "{% if course %}{{ course.title }}{% endif %}"
       })
     })
       .then((response) => response.json())
