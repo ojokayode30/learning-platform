@@ -1,4 +1,5 @@
 import functools
+import random
 
 from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify)
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -43,9 +44,28 @@ def message():
   print(course)
 
   if chattype == 'instructor':
-    response = message
+    # Add random message response related to course instructor
+    responses = [
+      "Sure, I'm here to assist you every step of the way.",
+      "That's an interesting question. Let me provide some insight.",
+      "I appreciate your curiosity! Let's dive into the topic together.",
+      "Absolutely, I'm happy to guide you through any questions you have.",
+      "Let's explore this topic further. Feel free to ask anything.",
+      "Your curiosity is commendable! Let's find the answer together.",
+      "I'm glad you asked! Let me provide some clarity on that.",
+      "Excellent question! Let me shed some light on the topic.",
+      "Your engagement is appreciated! Let's delve into the details.",
+      "Of course! I'm here to provide support and clarification.",
+      "Thanks for reaching out! Let's tackle this question together.",
+      "Your interest in learning is admirable! Let's find the answer.",
+      "Absolutely, I'm here to address any inquiries you may have.",
+      "I'm excited to help you explore this topic further.",
+      "Your dedication to learning is evident! Let's dive in."
+    ]
+    response = random.choice(responses)
   else:
-    message += " Return a response saying 'I can only answer questions related to " + course + "' when the question is not related to " + course + " and don't give any brief or anything related to the question"
+    if course is not None:
+      message += "\n\n Return a response saying 'I can only answer questions related to " + course + "' when the question is not pleasantries and not related or similar to " + course + " and give just a simple brief."
     response = ai.prompt(message=message,)
 
   return jsonify({ 'message': response })

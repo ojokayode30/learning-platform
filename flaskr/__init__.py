@@ -5,6 +5,7 @@ from . import auth
 from . import course
 from . import ai_chat
 from . import resource
+from . import assessment
 from flaskr.auth import login_required
 from flaskr.db import get_db
 from flaskr.auth import login_required
@@ -64,5 +65,6 @@ def create_app(test_config=None):
   app.register_blueprint(course.bp)
   app.register_blueprint(ai_chat.bp)
   app.register_blueprint(resource.bp)
+  app.register_blueprint(assessment.bp)
   
   return app

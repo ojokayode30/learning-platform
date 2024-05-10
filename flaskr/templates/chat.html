@@ -65,7 +65,10 @@
       {% else %}
       <ul class="nav nav-pills card-header-pills">
         <li class="nav-item">
-          <a class="nav-link active" href="#">AI Assistant</a>
+          <a class="nav-link chat_assistant active" href="#">AI Assistant</a>
+        </li>
+        <li class="nav-item d-none">
+          <a class="nav-link chat_instructor" href="#">AI Assistant</a>
         </li>
       </ul>
       {% endif %}
@@ -117,9 +120,9 @@
   </div>
 </div>
 <script>
-  var selectedChat = 'instructor';
-  document.querySelector('.chat_assistant').classList.remove('active', 'fw-bold');
-  document.querySelector('.chat_instructor').classList.add('active', 'fw-bold');
+  var selectedChat = 'assistant';
+  document.querySelector('.chat_assistant').classList.add('active', 'fw-bold');
+  document.querySelector('.chat_instructor').classList.remove('active', 'fw-bold');
 
   function chatType(type) {
     selectedChat = type;

@@ -77,8 +77,10 @@ def course_lessons(course_id):
     "SELECT COUNT(*) FROM user_course_enrollment WHERE user_id = ? AND course_id = ?",
     (user_id, course_id)
   ).fetchone()[0] > 0
+
+  total_completed_lessons = sum(1 for lesson in lessons if lesson['completed'])
   
-  return render_template('course/lessons.html', course=course, lessons=lessons, enrolled=enrolled)
+  return render_template('course/lessons.html', course=course, lessons=lessons, enrolled=enrolled, total_completed_lessons=total_completed_lessons, len_lessons=len(lessons))
 
 @bp.route('/lessons_progress/<lesson_id>/<is_complete>')
 @login_required
