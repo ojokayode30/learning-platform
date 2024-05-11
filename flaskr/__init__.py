@@ -8,7 +8,6 @@ from . import resource
 from . import assessment
 from flaskr.auth import login_required
 from flaskr.db import get_db
-from flaskr.auth import login_required
 from meta_ai_api import MetaAI
 
 def create_app(test_config=None):
@@ -31,7 +30,7 @@ def create_app(test_config=None):
   @app.before_request
   def before_request():
       proxy = {
-        'http': 'http://141.101.122.129:80',
+        'https': '132.148.128.88:51604',
       }
       g.ai = MetaAI(proxy=proxy)
   
