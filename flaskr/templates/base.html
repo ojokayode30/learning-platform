@@ -31,12 +31,13 @@
                   alt="Notification icon"
                 />
               </div>
-              <div class="d-block">
+              <div class="d-flex align-items-center">
                 <img
                   src="{{ url_for('static', filename='images/user-icon.png') }}"
                   class="img-fluid"
                   alt="User Profile"
                 />
+                <a href="{{ url_for('auth.logout') }}" class="ms-3 lead link-danger fw-bold">Logout</a>
               </div>
             </div>
           </div>
