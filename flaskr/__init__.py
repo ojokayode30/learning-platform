@@ -30,7 +30,7 @@ def create_app(test_config=None):
   @app.before_request
   def before_request():
       proxy = {
-        'https': '132.148.128.88:51604',
+        'http': 'http://172.64.91.42:80',
       }
       g.ai = MetaAI(proxy=proxy)
   
