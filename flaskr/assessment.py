@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, current_app
 import sqlite3
 import pandas as pd
 from sklearn.linear_model import LinearRegression
@@ -12,7 +12,8 @@ def assessment():
   user_id = session.get('user_id')
   
   # Connect to the SQLite database
-  conn = sqlite3.connect(os.path.join('instance/flaskr.sqlite'))
+  conn = sqlite3.connect(current_app.config['DATABASE'],
+      detect_types=sqlite3.PARSE_DECLTYPES)
 
   # Define SQL queries to retrieve relevant data
   user_enrollment_query = f"""
@@ -70,7 +71,8 @@ def assessment():
 @bp.route('/admin')
 def admin_assessment():
   # Connect to the SQLite database
-  conn = sqlite3.connect(os.path.join('instance/flaskr.sqlite'))
+  conn = sqlite3.connect(current_app.config['DATABASE'],
+      detect_types=sqlite3.PARSE_DECLTYPES)
 
   # Define SQL queries to retrieve relevant data
   user_enrollment_query = """
