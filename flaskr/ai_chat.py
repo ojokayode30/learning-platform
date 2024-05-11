@@ -5,12 +5,8 @@ from flask import (Blueprint, flash, g, redirect, render_template, request, sess
 from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
 from flaskr.auth import login_required
-from meta_ai_api import MetaAI
 
 bp = Blueprint('chat', __name__, url_prefix='/chat')
-proxy = {
-  'http': 'http://141.101.122.129:80',
-}
 
 @bp.route('/')
 @login_required
@@ -24,7 +20,7 @@ def index():
 def chat(course_id):
   user_id = session.get('user_id')
   db = get_db()
-  ai = MetaAI(proxy=proxy)
+  # ai = MetaAI(proxy=proxy)
   course = db.execute(
     "SELECT * FROM courses WHERE id = ?", (course_id,)
   ).fetchone()
@@ -42,7 +38,7 @@ def message():
   course = request.json['course']
 
   db = get_db()
-  ai = MetaAI(proxy=proxy)
+  # ai = g.ai(proxy=proxy, access_token=g.access_token, cookies=g.cookies)
 
   print(course)
 
@@ -69,6 +65,6 @@ def message():
   else:
     if course is not None:
       message += "\n\n Return a response saying 'I can only answer questions related to " + course + "' when the question is not pleasantries and not related or similar to " + course + " and give just a simple brief."
-    response = ai.prompt(message=message,)
+    response = g.ai.prompt(message=message)
 
   return jsonify({ 'message': response })

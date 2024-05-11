@@ -1,5 +1,5 @@
 import os
-from flask import (Flask, render_template, redirect, url_for, session)
+from flask import (Flask, render_template, redirect, url_for, session, g)
 from . import db
 from . import auth
 from . import course
@@ -9,6 +9,7 @@ from . import assessment
 from flaskr.auth import login_required
 from flaskr.db import get_db
 from flaskr.auth import login_required
+from meta_ai_api import MetaAI
 
 def create_app(test_config=None):
   app = Flask(__name__, instance_relative_config=True)
@@ -26,6 +27,13 @@ def create_app(test_config=None):
     os.makedirs(app.instance_path)
   except OSError:
     pass
+
+  @app.before_request
+  def before_request():
+      proxy = {
+        'http': 'http://141.101.122.129:80',
+      }
+      g.ai = MetaAI(proxy=proxy)
   
   @app.route('/')
   def index():
