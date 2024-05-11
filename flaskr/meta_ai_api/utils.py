@@ -6,7 +6,7 @@ from requests_html import HTMLSession
 import requests
 from bs4 import BeautifulSoup
 
-from meta_ai_api.exceptions import FacebookInvalidCredentialsException
+from .exceptions import FacebookInvalidCredentialsException
 
 
 def generate_offline_threading_id() -> str:

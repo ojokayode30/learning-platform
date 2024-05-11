@@ -8,15 +8,15 @@ from typing import Dict, List, Generator, Iterator
 import requests
 from requests_html import HTMLSession
 
-from meta_ai_api.utils import (
+from .utils import (
     generate_offline_threading_id,
     extract_value,
     format_response,
 )
 
-from meta_ai_api.utils import get_fb_session
+from .utils import get_fb_session
 
-from meta_ai_api.exceptions import FacebookRegionBlocked
+from .exceptions import FacebookRegionBlocked
 
 MAX_RETRIES = 3
 
