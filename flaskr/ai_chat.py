@@ -8,6 +8,9 @@ from flaskr.auth import login_required
 from meta_ai_api import MetaAI
 
 bp = Blueprint('chat', __name__, url_prefix='/chat')
+proxy = {
+  'http': 'http://141.101.122.129:80',
+}
 
 @bp.route('/')
 @login_required
@@ -21,7 +24,7 @@ def index():
 def chat(course_id):
   user_id = session.get('user_id')
   db = get_db()
-  ai = MetaAI()
+  ai = MetaAI(proxy=proxy)
   course = db.execute(
     "SELECT * FROM courses WHERE id = ?", (course_id,)
   ).fetchone()
@@ -39,7 +42,7 @@ def message():
   course = request.json['course']
 
   db = get_db()
-  ai = MetaAI()
+  ai = MetaAI(proxy=proxy)
 
   print(course)
 
