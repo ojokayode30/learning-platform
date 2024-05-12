@@ -4,8 +4,6 @@ import random
 from flask import (Blueprint, render_template, request, session, jsonify)
 from flaskr.db import get_db
 from flaskr.auth import login_required
-from openai import OpenAI
-import google.generativeai as genai
 import requests
 import replicate
 
