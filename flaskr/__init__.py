@@ -8,7 +8,6 @@ from . import resource
 from . import assessment
 from flaskr.auth import login_required
 from flaskr.db import get_db
-from meta_ai_api import MetaAI
 
 def create_app(test_config=None):
   app = Flask(__name__, instance_relative_config=True)
@@ -26,13 +25,6 @@ def create_app(test_config=None):
     os.makedirs(app.instance_path)
   except OSError:
     pass
-
-  @app.before_request
-  def before_request():
-      proxy = {
-        'http': 'http://172.64.91.42:80',
-      }
-      g.ai = MetaAI(proxy=proxy)
   
   @app.route('/')
   def index():

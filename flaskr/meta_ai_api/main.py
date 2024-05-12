@@ -113,7 +113,7 @@ class MetaAI:
         return access_token
 
     def prompt(
-        self, message: str, stream: bool = False, attempts: int = 0
+        self, message: str, stream: bool = False, attempts: int = 0, access_token: str = None
     ) -> Dict or Generator[Dict, None, None]:
         """
         Sends a message to the Meta AI and returns the response.
@@ -130,7 +130,7 @@ class MetaAI:
             Exception: If unable to obtain a valid response after several attempts.
         """
         if not self.is_authed:
-            self.access_token = self.get_access_token()
+            self.access_token = access_token
             auth_payload = {"access_token": self.access_token}
             url = "https://graph.meta.ai/graphql?locale=user"
 

@@ -170,7 +170,7 @@
           <div class="media-body">
             <h5 class="mt-0 small">${selectedChat == 'assistant' ? 'AI Assistant' : 'Instructor' }</h5>
             <p class="bg-light text-dark p-3 rounded">
-              ${data.message.message || data.message}
+              ${data.message.ai && data.message.ai.join('') || data.message.instructor}
             </p>
           </div>
         `;
