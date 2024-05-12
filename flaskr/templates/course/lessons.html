@@ -14,12 +14,14 @@
 </div>
 
 <h2 class="mb-3">Lessons</h2>
+{% if enrolled and len_lessons != 0 %}
 <duv class="d-block">
   <div class="progress mb-3" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
     <div class="progress-bar progress-bar-striped" style="width: {{ (total_completed_lessons / len_lessons) * 100 }}%"></div>
   </div>
   <p class="lead fw-bold">{{ total_completed_lessons }} out of {{ len_lessons }} lessons completed.</p>
 </duv>
+{% endif %}
 <a href="/chat/{{ course['id'] }}/course" class="btn btn-primary mb-5">Assistant AI Learning</a>
 <ul class="list-unstyled">
   {% for lesson in lessons %}

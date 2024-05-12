@@ -12,14 +12,6 @@ DROP TABLE IF EXISTS user_lesson_progress;
 
 DROP TABLE IF EXISTS lesson_comments;
 
-DROP TABLE IF EXISTS ai_models;
-
-DROP TABLE IF EXISTS training_data;
-
-DROP TABLE IF EXISTS predictions;
-
-DROP TABLE IF EXISTS evaluations;
-
 DROP TABLE IF EXISTS chat_conversations;
 
 DROP TABLE IF EXISTS chat_messages;
@@ -103,50 +95,6 @@ CREATE TABLE
         FOREIGN KEY (lesson_id) REFERENCES lessons (id) ON DELETE CASCADE
     );
 
--- Table for AI models
-CREATE TABLE
-    ai_models (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-
--- Table for training data
-CREATE TABLE
-    training_data (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        ai_model_id CHAR(36),
-        data TEXT,
-        label TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (ai_model_id) REFERENCES ai_models (id) ON DELETE CASCADE
-    );
-
--- Table for predictions
-CREATE TABLE
-    predictions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        ai_model_id CHAR(36),
-        data TEXT,
-        prediction TEXT,
-        confidence FLOAT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (ai_model_id) REFERENCES ai_models (id) ON DELETE CASCADE
-    );
-
--- Table for evaluations
-CREATE TABLE
-    evaluations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        ai_model_id CHAR(36),
-        evaluation_metric VARCHAR(100),
-        value FLOAT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (ai_model_id) REFERENCES ai_models (id) ON DELETE CASCADE
-    );
-
 -- Table for chat conversations
 CREATE TABLE
     chat_conversations (
@@ -187,30 +135,8 @@ VALUES
         'k.ojo@mail.com',
         'kojo',
         'scrypt:32768:8:1$Mo6bKWd5fYglpvBT$30c8dac2b9982b74c1f7d3d1e6bfc4e1040d3b0f1ad8b6a4efcb5929f0342537fab78ab278d2b8f92935e6a6e486e0e8328770cad0e8795b717391ed8c63653a'
-    ),
-    (
-        'John',
-        'Doe',
-        'john@example.com',
-        'johndoe',
-        'scrypt:32768:8:1$Mo6bKWd5fYglpvBT$30c8dac2b9982b74c1f7d3d1e6bfc4e1040d3b0f1ad8b6a4efcb5929f0342537fab78ab278d2b8f92935e6a6e486e0e8328770cad0e8795b717391ed8c63653a'
-    ),
-    (
-        'Alice',
-        'Smith',
-        'alice@example.com',
-        'alicesmith',
-        'scrypt:32768:8:1$Mo6bKWd5fYglpvBT$30c8dac2b9982b74c1f7d3d1e6bfc4e1040d3b0f1ad8b6a4efcb5929f0342537fab78ab278d2b8f92935e6a6e486e0e8328770cad0e8795b717391ed8c63653a'
-    ),
-    (
-        'Bob',
-        'Johnson',
-        'bob@example.com',
-        'bobjohnson',
-        'scrypt:32768:8:1$Mo6bKWd5fYglpvBT$30c8dac2b9982b74c1f7d3d1e6bfc4e1040d3b0f1ad8b6a4efcb5929f0342537fab78ab278d2b8f92935e6a6e486e0e8328770cad0e8795b717391ed8c63653a'
     );
-
--- Insert sample data into the courses table
+    -- Insert sample data into the courses table
 INSERT INTO
     courses (
         title,
@@ -256,70 +182,34 @@ VALUES
         CURRENT_TIMESTAMP
     );
 
-INSERT INTO
-    lessons (course_id, title, content)
-VALUES
-    (
-        '2',
-        'Introduction to Deep Learning',
-        'An overview of deep learning and its applications.'
-    ),
-    (
-        '2',
-        'Neural Networks Basics',
-        'Understanding the building blocks of neural networks.'
-    ),
-    (
-        '2',
-        'Gradient Descent Optimization',
-        'Exploring gradient descent algorithms for optimization.'
-    ),
-    (
-        '2',
-        'Convolutional Neural Networks (CNNs)',
-        'Introduction to CNNs and their applications in image recognition.'
-    ),
-    (
-        '2',
-        'Recurrent Neural Networks (RNNs)',
-        'Understanding RNNs and their applications in sequential data analysis.'
-    ),
-    (
-        '2',
-        'Deep Learning Frameworks',
-        'An overview of popular deep learning frameworks like TensorFlow and PyTorch.'
-    );
-
-INSERT INTO
-    lessons (course_id, title, content)
-VALUES
-    (
-        '1',
-        'Introduction to Machine Learning',
-        'An overview of machine learning concepts and applications.'
-    ),
-    (
-        '1',
-        'Supervised Learning',
-        'Understanding supervised learning algorithms and techniques.'
-    ),
-    (
-        '1',
-        'Unsupervised Learning',
-        'Exploring unsupervised learning algorithms and techniques.'
-    ),
-    (
-        '1',
-        'Feature Engineering',
-        'Techniques for feature selection, extraction, and transformation.'
-    ),
-    (
-        '1',
-        'Model Evaluation and Validation',
-        'Methods for evaluating and validating machine learning models.'
-    ),
-    (
-        '1',
-        'Model Deployment',
-        'Considerations and best practices for deploying machine learning models in production.'
-    );
+INSERT INTO lessons (course_id, title, content) VALUES
+    ('2', 'Introduction to Deep Learning', 'An overview of deep learning and its applications.'),
+    ('2', 'Neural Networks Basics', 'Understanding the building blocks of neural networks.'),
+    ('2', 'Gradient Descent Optimization', 'Exploring gradient descent algorithms for optimization.'),
+    ('2', 'Convolutional Neural Networks (CNNs)', 'Introduction to CNNs and their applications in image recognition.'),
+    ('2', 'Recurrent Neural Networks (RNNs)', 'Understanding RNNs and their applications in sequential data analysis.'),
+    ('2', 'Deep Learning Frameworks', 'An overview of popular deep learning frameworks like TensorFlow and PyTorch.'),
+    ('1', 'Introduction to Machine Learning', 'An overview of machine learning concepts and applications.'),
+    ('1', 'Supervised Learning', 'Understanding supervised learning algorithms and techniques.'),
+    ('1', 'Unsupervised Learning', 'Exploring unsupervised learning algorithms and techniques.'),
+    ('1', 'Feature Engineering', 'Techniques for feature selection, extraction, and transformation.'),
+    ('1', 'Model Evaluation and Validation', 'Methods for evaluating and validating machine learning models.'),
+    ('1', 'Model Deployment', 'Considerations and best practices for deploying machine learning models in production.'),
+    ('3', 'Introduction to Natural Language Processing', 'An introduction to NLP and its applications.'),
+    ('3', 'Text Preprocessing', 'Techniques for cleaning and preparing text data for analysis.'),
+    ('3', 'Word Embeddings', 'Understanding word embeddings and word representation models.'),
+    ('3', 'Named Entity Recognition (NER)', 'Introduction to NER and its role in information extraction.'),
+    ('3', 'Sentiment Analysis', 'Techniques for analyzing the sentiment of text data.'),
+    ('3', 'Machine Translation', 'Methods for translating text between languages using machine learning models.'),
+    ('4', 'Introduction to Computer Vision', 'An overview of computer vision concepts and applications.'),
+    ('4', 'Image Processing Techniques', 'Basic image processing operations and algorithms.'),
+    ('4', 'Object Detection', 'Methods for detecting and localizing objects in images.'),
+    ('4', 'Image Classification', 'Techniques for classifying images into predefined categories.'),
+    ('4', 'Image Segmentation', 'Segmentation methods for partitioning images into meaningful regions.'),
+    ('4', 'Deep Learning for Computer Vision', 'Overview of deep learning approaches for solving computer vision tasks.'),
+    ('5', 'Introduction to Reinforcement Learning', 'An overview of reinforcement learning concepts and applications.'),
+    ('5', 'Markov Decision Processes (MDPs)', 'Introduction to MDPs and their use in modeling decision-making problems.'),
+    ('5', 'Q-Learning', 'Fundamentals of Q-learning algorithm for solving reinforcement learning problems.'),
+    ('5', 'Deep Q-Networks (DQN)', 'Introduction to DQN and its applications in deep reinforcement learning.'),
+    ('5', 'Policy Gradient Methods', 'Methods for directly optimizing policy parameters in reinforcement learning.'),
+    ('5', 'Actor-Critic Methods', 'Overview of actor-critic methods for combining value-based and policy-based approaches.');

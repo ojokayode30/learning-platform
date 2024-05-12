@@ -32,6 +32,7 @@
         <th>Completed Count</th>
         <th>Understood Count</th>
         <th>Total Lessons</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -42,12 +43,36 @@
         <td>{{ row['completed_count'] }}</td>
         <td>{{ row['understood_count'] }}</td>
         <td>{{ row['total_lessons'] }}</td>
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-json='{ "course": "{{ row.course_title }}", "lesson": "{{ row.lesson_title }}", "understood": "{{ row.understood_count }}", "completed": "{{ row.completed_count }}"}'>
+            Generate AI Analysis
+          </button>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
+<!-- Modal -->
+<div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="{{ url_for('static', filename='js/chart.umd.js') }}"></script>
 <script>
   // Access data passed from Flask
@@ -96,6 +121,51 @@
           }
       }
   });
+</script>
+
+<script>
+  const exampleModal = document.getElementById('exampleModal')
+  if (exampleModal) {
+    exampleModal.addEventListener('show.bs.modal', event => {
+      // Button that triggered the modal
+      const button = event.relatedTarget
+      // Extract info from data-bs-* attributes
+      let data = button.getAttribute('data-bs-json')
+      data = JSON.parse(data)
+      console.log(data)
+
+      // If necessary, you could initiate an Ajax request here
+      // and then do the updating in a callback.
+
+      // Update the modal's content.
+      const modalTitle = exampleModal.querySelector('.modal-title')
+      const modalBody = exampleModal.querySelector('.modal-body')
+
+      modalTitle.textContent = data.course + ' Analysis'
+      modalBody.innerHTML = 'Loading analysis...'
+
+      fetch('/assessment/analysis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          modalBody.innerHTML = ''
+          var receiverMessage = document.createElement('div');
+          receiverMessage.classList.add('media', 'receiver-message');
+          receiverMessage.innerHTML = `
+            <div class="media-body">
+              ${marked.parse(data.message && data.message.join('') || 'No Analysis made')}
+            </div>
+          `;
+          modalBody.appendChild(receiverMessage);
+        })
+        .catch((error) => console.error('Error:', error));
+    })
+  }
 </script>
 
 {% endblock %}

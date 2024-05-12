@@ -7,10 +7,12 @@
   /* Align sender messages to the right */
   .sender-message {
     max-width: 55%;
+    margin-bottom: 15px;
   }
   /* Align receiver messages to the left */
   .receiver-message {
     max-width: 55%;
+    margin-bottom: 15px;
   }
 </style>
 <style>
@@ -39,10 +41,7 @@
     }
   }
 </style>
-<!-- <div class="d-block">
-  <h1 class="fs-2">General Learning Chat</h1>
-  <small class="text-secondary">...</small>
-</div> -->
+
 <div class="container">
   {% if course %}
   <div class="d-block">
@@ -90,22 +89,6 @@
           </p>
         </div>
       </div> -->
-      {% if intro %}
-      <div class="media receiver-message w-auto d-flex">
-        <div class="media-body">
-          <h5 class="mt-0 small">AI Assistant</h5>
-          <p class="bg-light text-dark p-3 rounded">{{ intro }}</p>
-        </div>
-      </div>
-      {% endif %}
-      {% if course_suggestions %}
-      <div class="media receiver-message w-auto d-flex">
-        <div class="media-body">
-          <h5 class="mt-0 small">AI Assistant</h5>
-          <p class="bg-light text-dark p-3 rounded">{{ course_suggestions }}</p>
-        </div>
-      </div>
-      {% endif %}
     </div>
     <div class="card-footer">
       <form id="messageForm" method="post">
@@ -119,6 +102,25 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+{% if intro %}
+<script>
+  let d;
+  var chatMessages = document.querySelector('.chat-messages');
+  let intro = `{{ intro }}`
+  d = document.createElement('div')
+  d.className = 'media receiver-message w-auto d-flex';
+  d.innerHTML = `
+    <div class="media-body">
+      <h5 class="mt-0 small">AI Assistant</h5>
+      <div class="bg-light text-dark p-3 rounded">${marked.parse(intro)}</div>
+    </div>
+  `
+  chatMessages.appendChild(d)
+</script>
+{% endif %}
+
 <script>
   var selectedChat = 'assistant';
   document.querySelector('.chat_assistant').classList.add('active', 'fw-bold');
@@ -169,9 +171,9 @@
         receiverMessage.innerHTML = `
           <div class="media-body">
             <h5 class="mt-0 small">${selectedChat == 'assistant' ? 'AI Assistant' : 'Instructor' }</h5>
-            <p class="bg-light text-dark p-3 rounded">
-              ${data.message.ai && data.message.ai.join('') || data.message.instructor}
-            </p>
+            <div class="bg-light text-dark p-3 rounded">
+              ${marked.parse(data.message.ai && data.message.ai.join('') || data.message.instructor)}
+            </div>
           </div>
         `;
         chatMessages.appendChild(receiverMessage);

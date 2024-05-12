@@ -52,7 +52,16 @@ def create_app(test_config=None):
         WHERE uce.user_id = ? AND ulp.completed = 1
     """, (user_id,)).fetchone()[0]
 
-    return render_template('dashboard.html', total_courses=total_courses, total_enrolled_courses=total_enrolled_courses, completed_courses=completed_courses)
+    # Learning history
+    learning_history = db.execute("""
+        SELECT c.title AS course_title, c.instructor AS course_instructor, l.title AS lesson_title, ulp.understood
+        FROM courses c
+        JOIN lessons l ON c.id = l.course_id
+        LEFT JOIN user_lesson_progress ulp ON l.id = ulp.lesson_id AND ulp.user_id = ?
+        WHERE ulp.user_id = ?
+    """, (user_id, user_id)).fetchall()
+
+    return render_template('dashboard.html', total_courses=total_courses, total_enrolled_courses=total_enrolled_courses, completed_courses=completed_courses, learning_history=learning_history,)
 
   @app.route('/hello')
   def hello():

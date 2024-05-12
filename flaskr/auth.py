@@ -81,6 +81,17 @@ def load_logged_in_user():
       'SELECT * FROM users WHERE id = ?', (user_id,)
     ).fetchone()
 
+@bp.route('/user')
+def user():
+  user_id = session.get('user_id')
+  db = get_db()
+
+  user = db.execute(
+      "SELECT * FROM users WHERE  id = ?", (user_id,)
+    ).fetchone()
+  
+  return render_template('auth/user.html', user=user)
+
 @bp.route('/logout')
 def logout():
   session.clear()

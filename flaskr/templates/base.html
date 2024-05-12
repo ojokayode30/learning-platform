@@ -9,7 +9,7 @@
   </head>
 
   <body class="container-fluid bg-main">
-    <main class="container">
+    <main class="container" style="max-width: 85% !important;">
       <header class="border-bottom">
         <div class="row justify-content-between px-4 py-4">
           <div class="col-4">
@@ -32,11 +32,13 @@
                 />
               </div>
               <div class="d-flex align-items-center">
-                <img
-                  src="{{ url_for('static', filename='images/user-icon.png') }}"
-                  class="img-fluid"
-                  alt="User Profile"
-                />
+                <a href="{{ url_for('auth.user') }}">
+                  <img
+                    src="{{ url_for('static', filename='images/user-icon.png') }}"
+                    class="img-fluid"
+                    alt="User Profile"
+                  />
+                </a>
                 <a href="{{ url_for('auth.logout') }}" class="ms-3 lead link-danger fw-bold">Logout</a>
               </div>
             </div>

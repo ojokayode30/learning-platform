@@ -56,4 +56,35 @@
     <p class="lead fw-bold">{{ total_enrolled_courses }} out of {{ total_courses }} courses registered.</p>
   </div>
 </duv>
+<duv class="row">
+  <div class="col-8">
+    <div class="card bg-main-secondary">
+      <div class="card-header fw-bold">
+        Learning Histories
+      </div>
+      <div class="card-body p-0 m-0">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Instructor</th>
+              <th scope="col">Title</th>
+              <th scope="col">Lesson</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for learning in learning_history %}
+            <tr>
+              <td>{{ learning.course_instructor }}</td>
+              <td>{{ learning.course_title }}</td>
+              <td>{{ learning.lesson_title }}</td>
+              <td>{% if learning.understood != 1 %}Not understood{% else %}Completed{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</duv>
 {% endblock %}
